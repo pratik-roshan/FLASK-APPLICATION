@@ -8,29 +8,6 @@ from decorators import auth_required_with_permission
 
 user_management_bp = Blueprint('user_management', __name__)
 
-@user_management_bp.route('/assign_role', methods=['POST'])
-def assign_role():
-    data = request.get_json()
-    username = data.get('username')
-    role_name = data.get('role_name')
-
-    user = User.get_user_by_username(username)
-    role = Role.query.filter_by(role_name=role_name).first()
-
-    if not role:
-        return {"error": "Role does not exist"}, 404
-
-    if user:
-        if role in user.roles:
-            return{"message": "Role already assigned to user"}, 200
-        
-        user.roles.append(role)
-        db.session.commit()
-        return {"message": "Role assigned to user successfully"}, 200
-    
-    else:
-        return {"error": "User not found"}, 404
-
 @user_management_bp.route('/create_role', methods=['POST'])
 @auth_required_with_permission('create')
 def create_role():
@@ -65,6 +42,29 @@ def create_permission():
     db.session.commit()
 
     return {"message": "Permission created successfully"}
+
+@user_management_bp.route('/assign_role', methods=['POST'])
+def assign_role():
+    data = request.get_json()
+    username = data.get('username')
+    role_name = data.get('role_name')
+
+    user = User.get_user_by_username(username)
+    role = Role.query.filter_by(role_name=role_name).first()
+
+    if not role:
+        return {"error": "Role does not exist"}, 404
+
+    if user:
+        if role in user.roles:
+            return{"message": "Role already assigned to user"}, 200
+        
+        user.roles.append(role)
+        db.session.commit()
+        return {"message": "Role assigned to user successfully"}, 200
+    
+    else:
+        return {"error": "User not found"}, 404
 
 @user_management_bp.route('/assign_permission', methods=['POST'])
 def assign_permission():

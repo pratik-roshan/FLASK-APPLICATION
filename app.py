@@ -25,7 +25,6 @@ def create_app():
     db_name = os.getenv('DB_NAME')
 
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_pwd}@{db_host}:{db_port}/{db_name}'
-    # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
     app.config['JWT_ACCESS_TOKEN_TIME'] = os.environ.get('JWT_ACCESS_TOKEN_EXPIRES')

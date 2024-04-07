@@ -44,8 +44,8 @@ def login_user():
     
     return {"error": "Invalid username or password"}, 400
 
-@auth_bp.get('/protected')
+@auth_bp.get('/identity')
 @jwt_required()
-def protected():
+def identity():
     current_user = get_jwt_identity()
     return {'message': f'Hello, {current_user}'}
